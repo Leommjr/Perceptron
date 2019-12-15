@@ -13,14 +13,16 @@ struct train{
 };
 class Perceptron{
 private:
-    float rate{};
+    float rate;
     vector<float> w;
+    float threshold;
 public:
     Perceptron(int qtd, float rate);
     float getRate() const;
     void setRate(float rate);
     void fit(vector<struct train> train, int gens);
     int test(vector<int>labels);
+    void weights();
     virtual ~Perceptron();
 };
 

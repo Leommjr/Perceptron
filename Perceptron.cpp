@@ -3,15 +3,16 @@
 //
 
 #include "Perceptron.h"
-
+#include <iostream>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-comparison"
 using namespace std;
 
-bool positivo(int num) {
+/* Era usada para comparar o sinal
+ * bool positivo(int num) {
     return 0 < num;
-}
-Perceptron::Perceptron(int qtd, float rate = 0.1) {
+}*/
+Perceptron::Perceptron(int qtd, float rate) {
     /*
      * @param qtd Quantidade de features a serem atribuidos com pesos
      *
@@ -23,6 +24,7 @@ Perceptron::Perceptron(int qtd, float rate = 0.1) {
         i++;
     }while(i<qtd);
     Perceptron::rate = rate;
+    Perceptron::threshold = 0.0;
 }
 Perceptron::~Perceptron()
 = default;
@@ -50,11 +52,10 @@ void Perceptron::fit(vector<struct train> train, int gens)
             for (int i = 0; i < it.labels.size(); i++) {
                 yl += Perceptron::w[i] * it.labels[i];
             }
-                if(positivo(y) != positivo((int)yl) || yl == 0.0) {
+                if(y != yl) {
                     for (int i = 0; i < it.labels.size(); i++) {
-                        Perceptron::w[i] = w[i] + (Perceptron::rate * y * it.labels[i]);
-                        if (Perceptron::w[i] < 0.0)
-                            Perceptron::w[i] = 0.0;//threshold eh
+                        Perceptron::w[i] = w[i] + (Perceptron::rate *(y - yl)* it.labels[i]);//delta rule
+
                     }
                 }
         }
@@ -67,6 +68,14 @@ int Perceptron::test(vector<int>labels)
     for(int i = 0; i < labels.size(); i++){
         y += Perceptron::w[i]*labels[i];
     }
-    return (int)y;
+    return y > Perceptron::threshold ? 1 : -1;
+}
+void Perceptron::weights()
+{
+    int i = 1;
+    for(auto & it : Perceptron::w)
+    {
+        cout << "w"<< i++ << ": " << it << endl;
+    }
 }
 #pragma clang diagnostic pop
