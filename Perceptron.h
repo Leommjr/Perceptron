@@ -16,8 +16,9 @@ private:
     float rate;
     vector<float> w;
     float threshold;
+    bool winnow; //flag que define se o algoritmo Winnow sera usado
 public:
-    Perceptron(int qtd, float rate);
+    explicit Perceptron(int qtd, float rate = 0.1, bool winnow = false);
     float getRate() const;
     void setRate(float rate);
     void fit(vector<struct train> train, int gens);

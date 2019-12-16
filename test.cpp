@@ -5,7 +5,7 @@
 #include <iostream>
 int main(int argc,char *argv[])
 {
-    Perceptron p = Perceptron(3, 0.2);
+    Perceptron p = Perceptron(3, 0.2, true);
     vector<struct train> ts;
     struct train t = train();
     struct train t1 = train();
@@ -13,9 +13,9 @@ int main(int argc,char *argv[])
     struct train t4 = train();
     struct train t5 = train();
     vector<int> t3;
-    t3.push_back(1);
     t3.push_back(0);
     t3.push_back(1);
+    t3.push_back(0);
     t.labels.push_back(1);
     t.labels.push_back(1);
     t.labels.push_back(0);

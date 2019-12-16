@@ -12,22 +12,31 @@ using namespace std;
  * bool positivo(int num) {
     return 0 < num;
 }*/
-Perceptron::Perceptron(int qtd, float rate) {
+Perceptron::Perceptron(int qtd, float rate, bool winnow) {
     /*
      * @param qtd Quantidade de features a serem atribuidos com pesos
      *
      * Inicializa o vetor de pesos com zeros e da um valor para a taxa de aprendizado (de 0 a 1, por padrao 0.1)
      */
+    Perceptron::threshold = 0.0;
+    Perceptron::winnow = winnow;
+    int val = 0.0;
+    if(winnow){
+        val = 1.0;
+        Perceptron::threshold = (float)qtd;
+    }
     int i = 0;
     do{
-        Perceptron::w.push_back(0.0);
+        Perceptron::w.push_back(val);
         i++;
     }while(i<qtd);
     Perceptron::rate = rate;
-    Perceptron::threshold = 0.0;
 }
 Perceptron::~Perceptron()
-= default;
+{
+    Perceptron::w.clear();
+    Perceptron::w.shrink_to_fit();
+}
 
 float Perceptron::getRate() const
 {
@@ -52,7 +61,20 @@ void Perceptron::fit(vector<struct train> train, int gens)
             for (int i = 0; i < it.labels.size(); i++) {
                 yl += Perceptron::w[i] * it.labels[i];
             }
-                if(y != yl) {
+            if(Perceptron::winnow){
+                if(yl <= Perceptron::threshold && y == 1){
+                    for (int i = 0; i < it.labels.size(); i++){
+                        if(it.labels[i] == 1)
+                            Perceptron::w[i] = 2*Perceptron::w[i];
+                    }
+                }else if(yl >= Perceptron::threshold && y == -1){
+                    for (int i = 0; i < it.labels.size(); i++){
+                        if(it.labels[i] == 1)
+                            Perceptron::w[i] = Perceptron::w[i]/2;
+                    }
+                }
+            }
+            else if(y != yl) {
                     for (int i = 0; i < it.labels.size(); i++) {
                         Perceptron::w[i] = w[i] + (Perceptron::rate *(y - yl)* it.labels[i]);//delta rule
 
