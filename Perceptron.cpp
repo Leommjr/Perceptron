@@ -8,10 +8,10 @@
 #pragma clang diagnostic ignored "-Wunused-comparison"
 using namespace std;
 
-/* Era usada para comparar o sinal
- * bool positivo(int num) {
+
+  bool positivo(int num) {
     return 0 < num;
-}*/
+}
 Perceptron::Perceptron(int qtd, float rate, bool winnow) {
     /*
      * @param qtd Quantidade de features a serem atribuidos com pesos
@@ -74,7 +74,7 @@ void Perceptron::fit(vector<struct train> train, int gens)
                     }
                 }
             }
-            else if(y != yl) {
+            else if(positivo(y) != positivo((int)yl)) {
                     for (int i = 0; i < it.labels.size(); i++) {
                         Perceptron::w[i] = w[i] + (Perceptron::rate *(y - yl)* it.labels[i]);//delta rule
 
@@ -84,7 +84,7 @@ void Perceptron::fit(vector<struct train> train, int gens)
         gen++;
     }while(gen < gens);
 }
-int Perceptron::test(vector<int>labels)
+int Perceptron::test(vector<float>labels)
 {
     float y=0.0;
     for(int i = 0; i < labels.size(); i++){

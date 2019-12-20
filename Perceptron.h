@@ -8,7 +8,7 @@
 using namespace std;
 
 struct train{
-    vector<int> labels;
+    vector<float> labels;
     int output;
 };
 class Perceptron{
@@ -22,7 +22,7 @@ public:
     float getRate() const;
     void setRate(float rate);
     void fit(vector<struct train> train, int gens);
-    int test(vector<int>labels);
+    int test(vector<float>labels);
     void weights();
     virtual ~Perceptron();
 };
