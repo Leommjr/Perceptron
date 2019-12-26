@@ -9,7 +9,7 @@
 using namespace std;
 
 
-  bool positivo(int num) {
+template <class T> static inline bool positivo(T num) {
     return 0 < num;
 }
 Perceptron::Perceptron(int qtd, float rate, bool winnow) {
@@ -74,7 +74,7 @@ void Perceptron::fit(vector<struct train> train, int gens)
                     }
                 }
             }
-            else if(positivo(y) != positivo((int)yl)) {
+            else if(positivo(y) != positivo((int)yl) || (int)yl == 0) {
                     for (int i = 0; i < it.labels.size(); i++) {
                         Perceptron::w[i] = w[i] + (Perceptron::rate *(y - yl)* it.labels[i]);//delta rule
 
